@@ -1,0 +1,33 @@
+.article {
+    h1 {
+      @apply text-2xl py-4 mt-8 underline underline-offset-4;
+    }
+    h2 {
+      @apply text-xl py-3 mt-8;
+    }
+    h3 {
+      @apply text-lg py-2 mt-4;
+    }
+    p {
+      @apply leading-relaxed mt-1;
+    }
+    b,
+    strong {
+      @apply underline;
+    }
+    li {
+      @apply list-disc;
+    }
+    ul {
+      @apply pl-4;
+    }
+    pre {
+      @apply bg-neutral-100 p-4 m-4 text-sm;
+    }
+    blockquote {
+      @apply bg-neutral-100 p-4 m-4 text-sm;
+    }
+    img {
+      @apply my-2 border-solid border-2 border-neutral-200;
+    }
+  }

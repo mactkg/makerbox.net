@@ -1,19 +1,21 @@
 import { NextPage } from "next";
 import Link from "next/link";
+import Article from "../../components/blogs/Article";
+import ArticleHeader from "../../components/blogs/ArticleHeader";
 import { getAllArticles, openArticle, pathToSlug, slugToPath } from "../../lib/blogs";
 
 type Props = {
     title: string
+    published_at: string
     bodyHTML: string
     slug: string
 }
 
-const ArticlePage: NextPage<Props> = ({ title, bodyHTML, slug }) => {
+const ArticlePage: NextPage<Props> = ({ title, published_at, bodyHTML, slug }) => {
     return (
         <div>
-            <p><Link href={"/blog"}>👈 Blog List</Link></p>
-            <h1>{title}</h1>
-            <div dangerouslySetInnerHTML={{__html: bodyHTML}}></div>
+            <ArticleHeader title={title} published_at={published_at} />
+            <Article html={bodyHTML}/>
         </div>
     );
   };
@@ -41,6 +43,7 @@ export const getStaticProps = async (context: any) => {
     return {
         props: {
             title: article.attributes.title,
+            published_at: article.attributes.published_at.toDateString(),
             bodyHTML: await article.renderHTML(),
             slug
         }

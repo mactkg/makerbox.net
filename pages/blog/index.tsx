@@ -8,27 +8,28 @@ type Props = {
 };
 
 type ArticleSummaryProp = {
-  title: string,
+  title: string
   slug: string
+  published_at: string
 }
 
-const ArticleSummary: FC<ArticleSummaryProp> = ({title, slug}) => {
+const ArticleSummary: FC<ArticleSummaryProp> = ({title, slug, published_at}) => {
   return (
-    <div>
+    <li>
       <Link href={`/blog/${slug}`}>
-        <p>{title}</p>
+        <p>{published_at} - {title}</p>
       </Link>
-    </div>
+    </li>
   )
 }
 
 const ArticleList: NextPage<Props> = ({ articles }) => {
   return (
-      <div>
+      <ul>
           {articles.map((article, i) => (
             <ArticleSummary key={i} {...article}/>
           ))}
-      </div>
+      </ul>
   );
 };
 
@@ -38,12 +39,13 @@ export const getStaticProps = async() => {
     const article = await openArticle(path);
     return {
       title: article.attributes.title,
-      slug: article.slug
+      slug: article.slug,
+      published_at: article.attributes.published_at.toDateString()
     }
   }))
 
   return {
-    props: { articles }
+    props: { articles: articles.reverse() }
   };
 }
 

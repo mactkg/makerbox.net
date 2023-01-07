@@ -5,6 +5,7 @@ import { pathToSlug } from "./files";
 export interface ArticleAttribute {
   title: string;
   description: string;
+  published_at: Date;
 }
 
 export class Article {
