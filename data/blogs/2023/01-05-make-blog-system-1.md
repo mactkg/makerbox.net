@@ -1,6 +1,6 @@
 ---
 title: ブログシステムを作る(1) - 枠組みを作る
-description: 作っています
+description: Next.jsを使ってブログシステムとか、Webサイトを作っています
 published_at: 2023-01-05
 ---
 
