@@ -1,6 +1,5 @@
 import { NextPage } from "next";
 import Head from "next/head";
-import Link from "next/link";
 import Article from "../../components/blogs/Article";
 import ArticleHeader from "../../components/blogs/ArticleHeader";
 import { getAllArticles, openArticle, pathToSlug, slugToPath } from "../../lib/blogs";
