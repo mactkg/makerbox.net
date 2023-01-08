@@ -13,11 +13,14 @@ type Props = {
 }
 
 const ArticlePage: NextPage<Props> = ({ title, published_at, bodyHTML, description, slug }) => {
+    const ogpTitle = `${title} - makerbox.net`
     return (
         <>
             <Head>
-                <title>{title} - makerbox.net</title>
+                <title>{ogpTitle}</title>
                 <meta name="description" content={description} />
+                <meta name="og:title" content={ogpTitle} />
+                <meta name="og:description" content={description} />
             </Head>
             <div>
                 <ArticleHeader title={title} published_at={published_at} />

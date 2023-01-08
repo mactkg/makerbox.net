@@ -1,4 +1,5 @@
 import { NextPage } from 'next';
+import Head from 'next/head';
 import Link from 'next/link';
 import { FC } from 'react';
 import { getAllArticles, openArticle } from '../../lib/blogs';
@@ -24,12 +25,19 @@ const ArticleSummary: FC<ArticleSummaryProp> = ({title, slug, published_at}) => 
 }
 
 const ArticleList: NextPage<Props> = ({ articles }) => {
+  const ogpTitle = "Blog - makerbox.net"
   return (
+    <>
+      <Head>
+        <title>{ogpTitle}</title>
+        <meta name="og:title" content={ogpTitle} />
+      </Head>
       <ul>
           {articles.map((article, i) => (
             <ArticleSummary key={i} {...article}/>
           ))}
       </ul>
+    </>
   );
 };
 
