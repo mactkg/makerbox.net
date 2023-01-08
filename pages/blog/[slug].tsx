@@ -2,6 +2,7 @@ import { NextPage } from "next";
 import Head from "next/head";
 import Article from "../../components/blogs/Article";
 import ArticleHeader from "../../components/blogs/ArticleHeader";
+import OGP from "../../components/common/OGP";
 import { getAllArticles, openArticle, pathToSlug, slugToPath } from "../../lib/blogs";
 
 type Props = {
@@ -13,14 +14,10 @@ type Props = {
 }
 
 const ArticlePage: NextPage<Props> = ({ title, published_at, bodyHTML, description, slug }) => {
-    const ogpTitle = `${title} - makerbox.net`
     return (
         <>
             <Head>
-                <title>{ogpTitle}</title>
-                <meta name="description" content={description} />
-                <meta name="og:title" content={ogpTitle} />
-                <meta name="og:description" content={description} />
+                <OGP title={title} description={description} />
             </Head>
             <div>
                 <ArticleHeader title={title} published_at={published_at} />
