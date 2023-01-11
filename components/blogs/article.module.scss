@@ -25,7 +25,7 @@
     @apply py-4; // use padding to prevent margin offset
   }
   pre {
-    @apply bg-neutral-100 p-4 my-4 text-sm;
+    @apply bg-neutral-100 p-4 my-4 text-sm overflow-scroll;
   }
   blockquote {
     @apply bg-neutral-100 p-4 my-4 text-sm border-l-8 border-neutral-300;
