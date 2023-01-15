@@ -1,9 +1,6 @@
 - getStaticProps/Path でやっていることは`lib/usecase/`とかに入れちゃえ
 - CSS も脱出しやすくしたい
   - SolidStart とか SvelteKit とかどうなってるか
-- GitHub Actions で CI する
-- デプロイ先
-  - GitHub Pages でいいと思うけど面白いところあれば
 - API 作れると面白いんだけどなあ
   - タグは API で実装するとか、うーんどうなんだろう
   - モバイルアプリとかできるといい
