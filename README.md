@@ -2,7 +2,3 @@
 
 # makerbox.net
 A source code of https://makerbox.net/
-
-## memo
-- test
-  - `npx ts-node [file]`
