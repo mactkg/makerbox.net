@@ -8,9 +8,6 @@ permissions:
   contents: read
   id-token: write
 
-concurrency:
-  cancel-in-progress: true
-
 jobs:
   build:
     runs-on: ubuntu-latest
