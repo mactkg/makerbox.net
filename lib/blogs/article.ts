@@ -37,44 +37,27 @@ export class Article {
   async renderHTML(): Promise<string> {
     if (this.renderedHTML) return this.renderedHTML;
 
-    return new Promise((resolve) => {
-      // marked()の第三引数にcallbackが渡っていないと
-      // highlight optionがasyncにならないので、callback形式にする。
-      // remarkに移してもいいかも。
-      // https://github.com/markedjs/marked/blob/4aee878ac913e55941407897a8221040f8817b48/src/marked.js#L39-L106
-      marked(
-        this.body,
-        {
-          highlight: this.renderCode,
-        },
-        (_, result) => {
-          this.renderedHTML = result;
-          resolve(result);
-        }
-      );
+    const highlighter = await shiki.getHighlighter({
+      theme: "github-light",
     });
-  }
-
-  // <pre>タグや<code>タグで囲わずにshikiでrenderした結果を返す
-  private renderCode(code: string, lang?: string, callback?: Function) {
-    const fn = async () => {
-      const highlighter = await shiki.getHighlighter({
-        theme: "github-light",
-      });
-      const tokens = highlighter.codeToThemedTokens(code, lang);
-      const html = shiki.renderToHtml(tokens, {
-        elements: {
-          pre({ children }) {
-            return children;
+    const html = await marked(this.body, {
+      async: true,
+      highlight(code, lang) {
+        const tokens = highlighter.codeToThemedTokens(code, lang);
+        return shiki.renderToHtml(tokens, {
+          elements: {
+            pre({ children }) {
+              return children;
+            },
+            code({ children }) {
+              return children;
+            },
           },
-          code({ children }) {
-            return children;
-          },
-        },
-      });
+        });
+      },
+    });
 
-      callback ? callback(undefined, html) : null;
-    };
-    fn();
+    this.renderedHTML = html;
+    return html;
   }
 }
