@@ -1,10 +1,5 @@
 import { assert, test } from "vitest";
-import {
-  getAllArticles,
-  openArticle,
-  pathToSlug,
-  slugToPath,
-} from "../../../lib/blogs";
+import { getAllArticles, openArticle, pathToSlug, slugToPath } from "./files";
 
 test("find articles", async () => {
   const result = await getAllArticles();
