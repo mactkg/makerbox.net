@@ -36,6 +36,7 @@ jobs:
           restore-keys: |
             ${{ runner.os }}-nextjs-${{ hashFiles('**/package-lock.json') }}-
       - run: npm ci
+      - run: npm run test-ci
       - run: npm run build
       - uses: actions/upload-pages-artifact@v1
         with:
