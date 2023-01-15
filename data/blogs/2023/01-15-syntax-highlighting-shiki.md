@@ -36,36 +36,36 @@ shiki
 これ、思ったより苦戦しました。まず、元々Markedでrenderしていた部分のコードが以下の通り。
 
 ```ts
-  // https://github.com/mactkg/makerbox.net/blob/eedce8477aa0efa35f8bba85b336f510111a8d7b/lib/blogs/article.ts#L36-L41
-  async renderHTML(): Promise<string> {
-    if (this.renderedHTML) return this.renderedHTML;
+// https://github.com/mactkg/makerbox.net/blob/eedce8477aa0efa35f8bba85b336f510111a8d7b/lib/blogs/article.ts#L36-L41
+async renderHTML(): Promise<string> {
+  if (this.renderedHTML) return this.renderedHTML;
 
-    const html = await marked.parse(this.body, { async: true });
-    this.renderedHTML = html;
-    return html;
-  }
+  const html = await marked.parse(this.body, { async: true });
+  this.renderedHTML = html;
+  return html;
+}
 ```
 
 シンプルですね。Markedには[Syntax Highlighting](https://marked.js.org/using_advanced#highlight)の機能があり、これを使えばうまく動きそうです。
 
 ```ts
-  async renderHTML(): Promise<string> {
-    if (this.renderedHTML) return this.renderedHTML;
+async renderHTML(): Promise<string> {
+  if (this.renderedHTML) return this.renderedHTML;
 
-    const html = await marked.parse(this.body, {
-      async: true,
-      highlight: (code, lang, callback) {
-        shiki
-          .getHighlighter({ theme: 'nord' })
-          .then((highlighter) => {
-            const html = highlighter.codeToHtml(code, { lang })
-            callback ? callback(html) : null;
-          });
-      }
-    });
-    this.renderedHTML = html;
-    return html;
-  }
+  const html = await marked.parse(this.body, {
+    async: true,
+    highlight: (code, lang, callback) {
+      shiki
+        .getHighlighter({ theme: 'nord' })
+        .then((highlighter) => {
+          const html = highlighter.codeToHtml(code, { lang })
+          callback ? callback(html) : null;
+        });
+    }
+  });
+  this.renderedHTML = html;
+  return html;
+}
 ```
 
 が、これが動かない。。。よくよくみてみると、highlightの第三引数の `callback` が渡ってきていないのです。何事?
@@ -76,19 +76,19 @@ highlightの処理は[ここ](https://github.com/markedjs/marked/blob/137d3b4cc0
 仕方なく、このようなコードにしました。 `highlight` の中でPromiseを扱う必要がなくなって、見通しも良くなったきも。
 
 ```ts
-  async renderHTML(): Promise<string> {
-    if (this.renderedHTML) return this.renderedHTML;
+async renderHTML(): Promise<string> {
+  if (this.renderedHTML) return this.renderedHTML;
 
-    const highlighter = await shiki.getHighlighter({ theme: 'nord' })
-    const html = await marked.parse(this.body, {
-      async: true,
-      highlight: (code, lang, callback) {
-        return highlighter.codeToHtml(code, { lang })
-      }
-    });
-    this.renderedHTML = html;
-    return html;
-  }
+  const highlighter = await shiki.getHighlighter({ theme: 'nord' })
+  const html = await marked.parse(this.body, {
+    async: true,
+    highlight: (code, lang, callback) {
+      return highlighter.codeToHtml(code, { lang })
+    }
+  });
+  this.renderedHTML = html;
+  return html;
+}
 ```
 
 ## スタイリングの調整
@@ -126,32 +126,32 @@ const html = shiki.renderToHTML(tokens)
 最終的にはこんな感じになりました。
 
 ```ts
-  async renderHTML(): Promise<string> {
-    if (this.renderedHTML) return this.renderedHTML;
+async renderHTML(): Promise<string> {
+  if (this.renderedHTML) return this.renderedHTML;
 
-    const highlighter = await shiki.getHighlighter({
-      theme: "github-light",
-    });
-    const html = await marked(this.body, {
-      async: true,
-      highlight(code, lang) {
-        const tokens = highlighter.codeToThemedTokens(code, lang);
-        return shiki.renderToHtml(tokens, {
-          elements: {
-            pre({ children }) {
-              return children;
-            },
-            code({ children }) {
-              return children;
-            },
+  const highlighter = await shiki.getHighlighter({
+    theme: "github-light",
+  });
+  const html = await marked(this.body, {
+    async: true,
+    highlight(code, lang) {
+      const tokens = highlighter.codeToThemedTokens(code, lang);
+      return shiki.renderToHtml(tokens, {
+        elements: {
+          pre({ children }) {
+            return children;
           },
-        });
-      },
-    });
+          code({ children }) {
+            return children;
+          },
+        },
+      });
+    },
+  });
 
-    this.renderedHTML = html;
-    return html;
-  }
+  this.renderedHTML = html;
+  return html;
+}
 ```
 
 # まとめ
