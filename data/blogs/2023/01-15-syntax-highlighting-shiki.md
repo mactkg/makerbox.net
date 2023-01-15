@@ -123,7 +123,7 @@ const html = shiki.renderToHTML(tokens)
 このブログを書く過程でREADMEがおかしいことに気づいたのでPRを出しました。 [doc: Fix a way to access `renderToHTML` by mactkg · Pull Request #415 · shikijs/shiki](https://github.com/shikijs/shiki/pull/415)
 
 # 完成！
-結果的にはこんな感じになった。
+最終的にはこんな感じになりました。
 
 ```ts
   async renderHTML(): Promise<string> {
