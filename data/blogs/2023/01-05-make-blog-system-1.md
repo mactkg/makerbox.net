@@ -97,7 +97,6 @@ Hello world`);
 
 console.log(attributes); // { title: 'This is title', description: 'The great article' }
 console.log(body); // Hello world
-`);
 ```
 
 Generics に対応していて interface を渡すと型をつけて返してくれるのは嬉しいところ。一旦タイトルと説明文、公開日を入れられるようにしてみた。タグとかやり始めるとめんどくさいなあと思っている。

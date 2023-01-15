@@ -1,5 +1,6 @@
 import fm from "front-matter";
 import { marked } from "marked";
+import shiki from "shiki";
 import { pathToSlug } from "./files";
 
 export interface ArticleAttribute {
@@ -36,7 +37,26 @@ export class Article {
   async renderHTML(): Promise<string> {
     if (this.renderedHTML) return this.renderedHTML;
 
-    const html = await marked.parse(this.body, { async: true });
+    const highlighter = await shiki.getHighlighter({
+      theme: "github-light",
+    });
+    const html = await marked(this.body, {
+      async: true,
+      highlight(code, lang) {
+        const tokens = highlighter.codeToThemedTokens(code, lang);
+        return shiki.renderToHtml(tokens, {
+          elements: {
+            pre({ children }) {
+              return children;
+            },
+            code({ children }) {
+              return children;
+            },
+          },
+        });
+      },
+    });
+
     this.renderedHTML = html;
     return html;
   }
