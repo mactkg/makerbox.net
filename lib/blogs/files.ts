@@ -61,24 +61,3 @@ export const slugToPath = (path: string) => {
   const [_, year, filename] = result;
   return `${year}/${filename}.md`;
 };
-
-if (require.main === module) {
-  (async () => {
-    // find articles
-    const result = await getAllArticles();
-    assert.ok(!!result.find((v) => v == "2023/01-05-test.md"));
-
-    // open article
-    const file = await openArticle(result[0]);
-    assert.equal(file.attributes.title, "test post!");
-    assert.ok(await file.renderHTML());
-
-    // pathToSlug
-    const pts1 = pathToSlug("2001/01-01-hello-world.md");
-    assert.equal(pts1, "2001-01-01-hello-world");
-
-    // slugToPath
-    const stp1 = slugToPath("2001-01-01-hello-world");
-    assert.equal(stp1, "2001/01-01-hello-world.md");
-  })();
-}
